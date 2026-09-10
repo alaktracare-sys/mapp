@@ -1,0 +1,6 @@
+{
+  "name": "Pulse Music",
+  "description": "All-in-one music streaming combining Spotify, Apple Music & YouTube Music with live jam, synced lyrics, equalizer, offline mode, and analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
