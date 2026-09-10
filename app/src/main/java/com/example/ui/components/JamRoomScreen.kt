@@ -85,10 +85,10 @@ fun JamRoomScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "LIVE PULSE JAM",
+                        text = "LIVE ALAKTRA JAM",
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
-                        letterSpacing = 1.sp,
+                        letterSpacing = 0.8.sp,
                         color = TextPrimary
                     )
                 }

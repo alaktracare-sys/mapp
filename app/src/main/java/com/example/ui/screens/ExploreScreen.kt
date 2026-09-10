@@ -45,6 +45,8 @@ fun ExploreScreen(
     val playlists by viewModel.playlists.collectAsState()
     val isOffline by viewModel.isOfflineMode.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    val currentTrack by viewModel.currentTrack.collectAsState()
+    val isPlaying by viewModel.isPlaying.collectAsState()
 
     val categories = listOf("All", "Synthwave", "Hi-Res FLAC", "Late Night", "Chillhop", "Focus")
     var selectedCategory by remember { mutableStateOf("All") }
@@ -73,83 +75,122 @@ fun ExploreScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 90.dp)
         ) {
-            // Top App Bar with Branding, Offline Indicator & Actions
+            // Top App Bar with Branding, Greeting, Offline Indicator & Actions
             item {
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(horizontal = 20.dp, vertical = 12.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(id = com.example.R.drawable.ic_launcher_art),
-                            contentDescription = "App Logo",
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Column {
-                            Text(
-                                text = "Pulse Music",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = TextPrimary
-                            )
-                            if (isOffline) {
-                                Text(
-                                    text = "⚡ OFFLINE MODE",
-                                    fontSize = 9.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = NeonGreen
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(DarkSurfaceElevated),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = com.example.R.drawable.ic_launcher_art),
+                                    contentDescription = "App Logo",
+                                    modifier = Modifier
+                                        .size(34.dp)
+                                        .clip(RoundedCornerShape(8.dp))
                                 )
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = "Alaktra",
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        color = TextPrimary,
+                                        letterSpacing = 0.5.sp
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Box(
+                                        modifier = Modifier
+                                            .size(7.dp)
+                                            .clip(CircleShape)
+                                            .background(NeonGreen)
+                                    )
+                                }
+                                if (isOffline) {
+                                    Text(
+                                        text = "⚡ OFFLINE MODE",
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = NeonGreen
+                                    )
+                                }
+                            }
+                        }
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            // Studio EQ button
+                            IconButton(
+                                onClick = onOpenEqualizer,
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .clip(CircleShape)
+                                    .background(DarkSurfaceVariant)
+                                    .testTag("top_eq_button")
+                            ) {
+                                Icon(Icons.Filled.Tune, contentDescription = "Studio Equalizer", tint = NeonGreen, modifier = Modifier.size(19.dp))
+                            }
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            // Hi-Fi Audio setting button
+                            IconButton(
+                                onClick = onOpenHiFi,
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .clip(CircleShape)
+                                    .background(DarkSurfaceVariant)
+                                    .testTag("top_hifi_button")
+                            ) {
+                                Icon(Icons.Filled.GraphicEq, contentDescription = "Hi-Fi Settings", tint = HiResGold, modifier = Modifier.size(19.dp))
+                            }
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            // Voice control button
+                            IconButton(
+                                onClick = onOpenVoice,
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .clip(CircleShape)
+                                    .background(DarkSurfaceVariant)
+                                    .testTag("top_voice_button")
+                            ) {
+                                Icon(Icons.Filled.Mic, contentDescription = "Voice Control", tint = CyberCyan, modifier = Modifier.size(19.dp))
                             }
                         }
                     }
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        // Voice control button
-                        IconButton(
-                            onClick = onOpenVoice,
-                            modifier = Modifier
-                                .size(38.dp)
-                                .clip(CircleShape)
-                                .background(DarkSurfaceVariant)
-                                .testTag("top_voice_button")
-                        ) {
-                            Icon(Icons.Filled.Mic, contentDescription = "Voice Control", tint = CyberCyan, modifier = Modifier.size(20.dp))
-                        }
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        // Studio EQ button
-                        IconButton(
-                            onClick = onOpenEqualizer,
-                            modifier = Modifier
-                                .size(38.dp)
-                                .clip(CircleShape)
-                                .background(DarkSurfaceVariant)
-                                .testTag("top_eq_button")
-                        ) {
-                            Icon(Icons.Filled.Tune, contentDescription = "Studio Equalizer", tint = ElectricPurple, modifier = Modifier.size(20.dp))
-                        }
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        // Hi-Fi Audio setting button
-                        IconButton(
-                            onClick = onOpenHiFi,
-                            modifier = Modifier
-                                .size(38.dp)
-                                .clip(CircleShape)
-                                .background(DarkSurfaceVariant)
-                                .testTag("top_hifi_button")
-                        ) {
-                            Icon(Icons.Filled.GraphicEq, contentDescription = "Hi-Fi Settings", tint = HiResGold, modifier = Modifier.size(20.dp))
-                        }
+                    // Time-based greeting headline
+                    val hour = remember { java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY) }
+                    val greeting = when (hour) {
+                        in 5..11 -> "Good morning"
+                        in 12..17 -> "Good afternoon"
+                        else -> "Good evening"
                     }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Text(
+                        text = greeting,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextPrimary,
+                        letterSpacing = (-0.5).sp
+                    )
                 }
             }
 
@@ -440,31 +481,52 @@ fun ExploreScreen(
             }
 
             items(filteredTracks) { track ->
+                val isCurrentTrack = currentTrack?.id == track.id
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(if (isCurrentTrack) DarkSurfaceElevated else Color.Transparent)
                         .clickable { viewModel.playTrack(track, filteredTracks) }
                         .padding(horizontal = 20.dp, vertical = 8.dp)
                         .testTag("track_row_${track.id}"),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(id = track.coverRes),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
+                    Box(contentAlignment = Alignment.Center) {
+                        Image(
+                            painter = painterResource(id = track.coverRes),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                        )
+                        if (isCurrentTrack) {
+                            Box(
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color(0x77000000)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = if (isPlaying) Icons.Filled.GraphicEq else Icons.Filled.PlayArrow,
+                                    contentDescription = "Playing",
+                                    tint = NeonGreen,
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            }
+                        }
+                    }
 
                     Spacer(modifier = Modifier.width(14.dp))
 
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = track.title,
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = if (isCurrentTrack) FontWeight.Bold else FontWeight.SemiBold,
                             fontSize = 14.sp,
-                            color = TextPrimary,
+                            color = if (isCurrentTrack) NeonGreen else TextPrimary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )

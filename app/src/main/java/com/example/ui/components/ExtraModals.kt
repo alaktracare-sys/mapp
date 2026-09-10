@@ -188,7 +188,7 @@ fun VoiceControlModal(
                     Icon(Icons.Filled.Mic, contentDescription = null, tint = CyberCyan, modifier = Modifier.size(20.dp))
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Text("Pulse Voice Assistant", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text("Alaktra Voice Assistant", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             }
         },
         text = {
@@ -332,7 +332,7 @@ fun ShareCardDialog(
                                 shape = RoundedCornerShape(20.dp)
                             ) {
                                 Text(
-                                    text = "♪ Streaming on Pulse Music",
+                                    text = "♪ Streaming on Alaktra",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = NeonGreen,
@@ -368,7 +368,7 @@ fun ShareCardDialog(
                             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                 type = "text/plain"
                                 putExtra(Intent.EXTRA_SUBJECT, "Listen to ${track.title}")
-                                putExtra(Intent.EXTRA_TEXT, "Listen to ${track.title} by ${track.artist} on Pulse Music: https://pulsemusic.app/track/${track.id}")
+                                putExtra(Intent.EXTRA_TEXT, "Listen to ${track.title} by ${track.artist} on Alaktra: https://alaktra.app/track/${track.id}")
                             }
                             context.startActivity(Intent.createChooser(shareIntent, "Share Track"))
                         },
@@ -426,7 +426,7 @@ fun DeviceSyncDialog(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                Text("AVAILABLE PULSE DEVICES", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = TextSecondary)
+                Text("AVAILABLE ALAKTRA DEVICES", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = TextSecondary)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 devices.forEach { device ->
@@ -470,7 +470,7 @@ fun DeviceSyncDialog(
                                         fontSize = 13.sp
                                     )
                                     Text(
-                                        if (device.isCurrent) "Current Playback Device" else "Pulse Connect Ready",
+                                        if (device.isCurrent) "Current Playback Device" else "Alaktra Connect Ready",
                                         fontSize = 11.sp,
                                         color = TextSecondary
                                     )

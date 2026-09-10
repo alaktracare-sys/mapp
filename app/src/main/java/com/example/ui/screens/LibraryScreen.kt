@@ -46,6 +46,8 @@ fun LibraryScreen(
     val filter by viewModel.libraryFilter.collectAsState()
     val isOffline by viewModel.isOfflineMode.collectAsState()
     val syncStatus by viewModel.syncStatus.collectAsState()
+    val currentTrack by viewModel.currentTrack.collectAsState()
+    val isPlaying by viewModel.isPlaying.collectAsState()
 
     var showCreatePlaylistDialog by remember { mutableStateOf(false) }
     var newPlaylistTitle by remember { mutableStateOf("") }
@@ -82,16 +84,25 @@ fun LibraryScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Text(
-                            text = "YOUR LIBRARY",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = TextPrimary,
-                            letterSpacing = 0.8.sp
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "Your Library",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextPrimary,
+                                letterSpacing = (-0.5).sp
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Box(
+                                modifier = Modifier
+                                    .size(6.dp)
+                                    .clip(CircleShape)
+                                    .background(NeonGreen)
+                            )
+                        }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(top = 2.dp)
+                            modifier = Modifier.padding(top = 4.dp)
                         ) {
                             Icon(Icons.Filled.Sync, contentDescription = null, tint = NeonGreen, modifier = Modifier.size(12.dp))
                             Spacer(modifier = Modifier.width(4.dp))
@@ -113,7 +124,7 @@ fun LibraryScreen(
                                 .background(DarkSurfaceVariant)
                                 .testTag("library_create_blend_button")
                         ) {
-                            Icon(Icons.Filled.GroupAdd, contentDescription = "Create Blend", tint = ElectricPurple, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Filled.GroupAdd, contentDescription = "Create Blend", tint = CyberCyan, modifier = Modifier.size(20.dp))
                         }
 
                         Spacer(modifier = Modifier.width(8.dp))
@@ -380,31 +391,52 @@ fun LibraryScreen(
             val tracksToShow = if (filter == LibraryFilter.DOWNLOADED || isOffline) downloadedTracks else allTracks
 
             items(tracksToShow) { track ->
+                val isCurrentTrack = currentTrack?.id == track.id
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(if (isCurrentTrack) DarkSurfaceElevated else Color.Transparent)
                         .clickable { viewModel.playTrack(track, tracksToShow) }
                         .padding(horizontal = 20.dp, vertical = 8.dp)
                         .testTag("lib_track_${track.id}"),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(id = track.coverRes),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(46.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                    )
+                    Box(contentAlignment = Alignment.Center) {
+                        Image(
+                            painter = painterResource(id = track.coverRes),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(46.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                        if (isCurrentTrack) {
+                            Box(
+                                modifier = Modifier
+                                    .size(46.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color(0x77000000)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = if (isPlaying) Icons.Filled.GraphicEq else Icons.Filled.PlayArrow,
+                                    contentDescription = "Playing",
+                                    tint = NeonGreen,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
 
                     Spacer(modifier = Modifier.width(12.dp))
 
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = track.title,
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = if (isCurrentTrack) FontWeight.Bold else FontWeight.SemiBold,
                             fontSize = 14.sp,
-                            color = TextPrimary,
+                            color = if (isCurrentTrack) NeonGreen else TextPrimary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )

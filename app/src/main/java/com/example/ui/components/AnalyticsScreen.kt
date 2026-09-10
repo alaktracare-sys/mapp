@@ -65,10 +65,10 @@ fun AnalyticsScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "PULSE ANALYTICS & WRAPPED",
+                        text = "ALAKTRA ANALYTICS & WRAPPED",
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 16.sp,
-                        letterSpacing = 1.sp,
+                        letterSpacing = 0.8.sp,
                         color = TextPrimary
                     )
                 }

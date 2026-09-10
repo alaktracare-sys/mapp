@@ -105,7 +105,7 @@ class MusicViewModel(application: Application) : AndroidViewModel(application) {
     private val _isJamActive = MutableStateFlow(false)
     val isJamActive: StateFlow<Boolean> = _isJamActive.asStateFlow()
 
-    private val _jamRoomCode = MutableStateFlow("PULSE-882")
+    private val _jamRoomCode = MutableStateFlow("ALAKTRA-882")
     val jamRoomCode: StateFlow<String> = _jamRoomCode.asStateFlow()
 
     private val _jamParticipants = MutableStateFlow<List<JamParticipant>>(
@@ -131,7 +131,7 @@ class MusicViewModel(application: Application) : AndroidViewModel(application) {
     )
     val devices: StateFlow<List<SyncDevice>> = _devices.asStateFlow()
 
-    private val _syncStatus = MutableStateFlow("Synced with Pulse Cloud")
+    private val _syncStatus = MutableStateFlow("Synced with Alaktra Cloud")
     val syncStatus: StateFlow<String> = _syncStatus.asStateFlow()
 
     // Voice Control State

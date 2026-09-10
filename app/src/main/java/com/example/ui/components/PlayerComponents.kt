@@ -78,7 +78,7 @@ fun MiniPlayer(
             )
             .testTag("mini_player_card"),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xEE181926)
+            containerColor = Color(0xF5161A22)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -90,7 +90,7 @@ fun MiniPlayer(
                     .fillMaxWidth()
                     .height(2.5.dp),
                 color = NeonGreen,
-                trackColor = Color(0x33FFFFFF)
+                trackColor = Color(0x22FFFFFF)
             )
 
             Row(
@@ -171,15 +171,15 @@ fun MiniPlayer(
                 IconButton(
                     onClick = { viewModel.togglePlayPause() },
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(42.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFF252836))
+                        .background(NeonGreen)
                         .testTag("mini_player_play_button")
                 ) {
                     Icon(
                         imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                         contentDescription = if (isPlaying) "Pause" else "Play",
-                        tint = TextPrimary,
+                        tint = Color.Black,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -492,8 +492,8 @@ fun FullPlayerSheet(
                         .fillMaxWidth()
                         .testTag("player_seek_slider"),
                     colors = SliderDefaults.colors(
-                        thumbColor = TextPrimary,
-                        activeTrackColor = TextPrimary,
+                        thumbColor = NeonGreen,
+                        activeTrackColor = NeonGreen,
                         inactiveTrackColor = Color(0x33FFFFFF)
                     )
                 )
@@ -583,8 +583,8 @@ fun FullPlayerSheet(
                 // Main Play/Pause Button
                 Surface(
                     shape = CircleShape,
-                    color = TextPrimary,
-                    shadowElevation = 8.dp,
+                    color = NeonGreen,
+                    shadowElevation = 12.dp,
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
@@ -595,7 +595,7 @@ fun FullPlayerSheet(
                         Icon(
                             imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             contentDescription = if (isPlaying) "Pause" else "Play",
-                            tint = DarkBackground,
+                            tint = Color.Black,
                             modifier = Modifier.size(36.dp)
                         )
                     }

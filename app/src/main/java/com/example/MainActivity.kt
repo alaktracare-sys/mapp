@@ -174,7 +174,7 @@ fun MainApp() {
                             selectedTab = 3
                         },
                         icon = { Icon(Icons.Filled.BarChart, contentDescription = "Analytics") },
-                        label = { Text("Pulse Stats", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
+                        label = { Text("Alaktra Stats", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = ElectricPurple,
                             selectedTextColor = ElectricPurple,
